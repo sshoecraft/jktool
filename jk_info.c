@@ -18,17 +18,24 @@ LICENSE file in the root directory of this source tree.
 static void _getvolts(jk_info_t *info, uint8_t *data) {
 	int i,j;
 
-	bindump("getvolts",data,300);
+	if (debug >= 5) bindump("getvolts",data,300);
 
 	i = 6;
 	for(j=0; j < 24; j++) {
 		info->cellvolt[j] = _getshort(&data[i]) / 1000.0;
 		if (!info->cellvolt[j]) break;
-		dprintf(4,"cellvolt[%02d] = data[%02d] = %.3f\n", j, i, (_getshort(&data[i]) / 1000.0));
+		dprintf(1,"cellvolt[%02d] = data[%02d] = %.3f\n", j, i, (_getshort(&data[i]) / 1000.0));
+		i += 2;
+	}
+	i = 64;
+	for(j=0; j < 24; j++) {
+		info->cellres[j] = _getshort(&data[i]) / 1000.0;
+		if (!info->cellres[j]) break;
+		dprintf(1,"cellres[%02d] = data[%02d] = %.3f\n", j, i, (_getshort(&data[i]) / 1000.0));
 		i += 2;
 	}
 	info->strings = j;
-	dprintf(4,"srings: %d\n", info->strings);
+	dprintf(1,"srings: %d\n", info->strings);
 	info->voltage = ((unsigned short)_getshort(&data[118])) / 1000.0;
 	dprintf(1,"voltage: %.2f\n", info->voltage);
 	info->current = _getshort(&data[126]) / 1000.0;
@@ -46,7 +53,7 @@ static void _getvolts(jk_info_t *info, uint8_t *data) {
 static void _getinfo(jk_info_t *info, uint8_t *data) {
 	int i,j,uptime,unk;
 
-	bindump("info",data,300);
+	if (debug >= 5) bindump("info",data,300);
 
 	j=0;
 	/* Model */
