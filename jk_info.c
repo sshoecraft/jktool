@@ -11,6 +11,7 @@ LICENSE file in the root directory of this source tree.
 #include <stdint.h>
 #include "jk_info.h"
 #include "debug.h"
+#include "utils.h"
 
 #define _getshort(p) (short)(*(p) | (*((p)+1) << 8))
 #define _getint(p) (int)(*(p) | (*((p)+1) << 8) | (*((p)+2) << 16) | (*((p)+3) << 24))
