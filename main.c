@@ -407,6 +407,8 @@ int main(int argc, char **argv) {
 	uint8_t data[128];
 	jk_session_t *s;
 
+	log_open("mybmm",0,LOG_INFO|LOG_WARNING|LOG_ERROR|LOG_SYSERR|LOG_DEBUG);
+
 	action = pretty = outfmt = all = reg = dump = 0;
 	sepch = ',';
 	sepstr = ",";
