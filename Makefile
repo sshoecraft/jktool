@@ -8,7 +8,8 @@ CFLAGS=-DJKTOOL -I$(MYBMM_SRC)
 #CFLAGS+=-Wall -O2 -pipe
 CFLAGS+=-Wall -g -DDEBUG
 LIBS+=-ldl -lgattlib -lglib-2.0 -lpthread
-LDFLAGS+=-rdynamic
+#LIBS+=-ldl -lgatt -lglib-2.0 -lpthread
+LDFLAGS+=-rdynamic -static
 
 vpath %.c $(MYBMM_SRC)
 
@@ -17,6 +18,8 @@ all: $(PROG)
 
 $(PROG): $(OBJS) $(DEPS)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $(PROG) $(OBJS) $(LIBS)
+
+$(OBJS): Makefile
 
 include $(MYBMM_SRC)/Makefile.dep
 
@@ -28,6 +31,10 @@ install: $(PROG)
 
 clean:
 	rm -rf $(PROG) $(OBJS) $(CLEANFILES)
+
+zip: $(PROG)
+	rm -f $(PROG)_pi_static.zip
+	zip $(PROG)_pi_static.zip $(PROG)
 
 push: clean
 	git add -A .
